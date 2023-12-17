@@ -29,7 +29,7 @@ const userCtrl = {
       if (!fullname)
         return res.status(400).json({message: "Please add your full name."});
       await User.findOneAndUpdate(
-        {_id: req.user._id},
+        {_id: req.id},
         {
           avatar,
           fullname,
@@ -49,53 +49,54 @@ const userCtrl = {
     try {
       const user = await User.find({
         _id: req.params.id,
-        followers: req.user._id,
+        followers: req.id,
       });
       if (user.length > 0)
         return res.status(500).json({message: "You followed this user."});
-      const newUser = await User.findOneAndUpdate(
+      const user1 = await User.findOneAndUpdate(
         {_id: req.params.id},
         {
-          $push: {followers: req.user._id},
+          $push: {followers: req.id},
         },
         {new: true}
-      ).populate("followers following", "-password");
-      await User.findOneAndUpdate(
-        {_id: req.user._id},
+      );
+      const user2 = await User.findOneAndUpdate(
+        {_id: req.id},
         {
           $push: {following: req.params.id},
         },
         {new: true}
       );
-      return res.json(newUser);
+      console.log(user1, user2);
+      return res.json({message: "Now you follow this user!"});
     } catch (error) {
       return res.status(500).json({message: error.message});
     }
   },
   unfollow: async (req, res) => {
     try {
-      const newUser = await User.findOneAndUpdate(
+      await User.findOneAndUpdate(
         {_id: req.params.id},
         {
-          $pull: {followers: req.user._id},
+          $pull: {followers: req.id},
         },
         {new: true}
       ).populate("followers following", "-password");
       await User.findOneAndUpdate(
-        {_id: req.user._id},
+        {_id: req.id},
         {
           $pull: {following: req.params.id},
         },
         {new: true}
       );
-      return res.json(newUser);
+      return res.json({message: "You unfollow this user."});
     } catch (error) {
       return res.status(500).json({message: error.message});
     }
   },
   suggestionsUser: async (req, res) => {
     try {
-      const newArr = [...req.user.following, req.user._id];
+      const newArr = [...req.user.following, req.id];
       const num = req.query.num || 10;
       const users = await User.aggregate([
         {$match: {_id: {$nin: newArr}}},

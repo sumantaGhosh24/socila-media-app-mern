@@ -1,0 +1,13 @@
+export {default as Register} from "./Register";
+export {default as RegisterVerify} from "./RegisterVerify";
+export {default as Login} from "./Login";
+export {default as LoginVerify} from "./LoginVerify";
+export {default as Logout} from "./Logout";
+export {default as ForgotPassword} from "./ForgotPassword";
+export {default as ConfirmForgotPassword} from "./ConfirmForgotPassword";
+export {default as Home} from "./Home";
+export {default as Profile} from "./Profile";
+export {default as Discover} from "./Discover";
+export {default as Post} from "./Post";
+export {default as Message} from "./Message";
+export {default as NotFound} from "./NotFound";

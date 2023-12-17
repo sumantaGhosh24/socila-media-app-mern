@@ -2,6 +2,8 @@ node_modules
 .env
 config.js
 data.js
+seed.js
+note.txt
 
 # Logs
 logs

@@ -4,7 +4,7 @@ const Post = require("../models/postModel");
 const commentCtrl = {
   createComment: async (req, res) => {
     try {
-      const {postId, content, tag, reply, postUserId} = req.body;
+      const {postId, content, tag, reply, postUserId} = req.body.newComment;
       const post = await Post.findById(postId);
       if (!post)
         return res.status(400).json({message: "This post does not exist."});
@@ -16,7 +16,7 @@ const commentCtrl = {
             .json({message: "This comment does not exist."});
       }
       const newComment = new Comment({
-        user: req.user._id,
+        user: req.id,
         content,
         tag,
         reply,
@@ -42,7 +42,7 @@ const commentCtrl = {
       await Comment.findOneAndUpdate(
         {
           _id: req.params.id,
-          user: req.user._id,
+          user: req.id,
         },
         {content}
       );
@@ -55,14 +55,14 @@ const commentCtrl = {
     try {
       const comment = await Comment.find({
         _id: req.params.id,
-        likes: req.user._id,
+        likes: req.id,
       });
       if (comment.length > 0)
         return res.status(400).json({message: "You liked this post."});
       await Comment.findOneAndUpdate(
         {_id: req.params.id},
         {
-          $push: {likes: req.user._id},
+          $push: {likes: req.id},
         },
         {new: true}
       );
@@ -76,7 +76,7 @@ const commentCtrl = {
       await Comment.findOneAndUpdate(
         {_id: req.params.id},
         {
-          $pull: {likes: req.user._id},
+          $pull: {likes: req.id},
         },
         {new: true}
       );
@@ -89,7 +89,7 @@ const commentCtrl = {
     try {
       const comment = await Comment.findOneAndDelete({
         _id: req.params.id,
-        $or: [{user: req.user._id}, {postUserId: req.user._id}],
+        $or: [{user: req.id}, {postUserId: req.id}],
       });
       await Post.findOneAndUpdate(
         {_id: comment.postId},

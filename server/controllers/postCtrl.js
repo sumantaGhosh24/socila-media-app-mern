@@ -2,19 +2,12 @@ const Post = require("../models/postModel");
 const Comment = require("../models/commentModel");
 const User = require("../models/userModel");
 
-class APIfeatures {
-  constructor(query, queryString) {
-    this.query = query;
-    this.queryString = queryString;
-  }
-  paginating() {
-    const page = this.queryString.page * 1 || 1;
-    const limit = this.queryString.limit * 1 || 9;
-    const skip = (page - 1) * limit;
-    this.query = this.query.skip(skip).limit(limit);
-    return this;
-  }
-}
+const Pagination = (req) => {
+  let page = Number(req.query.page) * 1 || 1;
+  let limit = Number(req.query.limit) * 1 || 4;
+  let skip = (page - 1) * limit;
+  return {page, limit, skip};
+};
 
 const postCtrl = {
   createPost: async (req, res) => {
@@ -25,37 +18,48 @@ const postCtrl = {
       const newPost = new Post({
         content,
         images,
-        user: req.user._id,
+        user: req.id,
       });
       await newPost.save();
-      return res.json({message: "Created post!"});
+      return res.json({
+        message: "Created post!",
+      });
     } catch (error) {
       return res.status(500).json({message: error.message});
     }
   },
   getPosts: async (req, res) => {
     try {
-      const features = new APIfeatures(
-        Post.find({
-          user: [...req.user.following, req.user._id],
-        }),
-        req.query
-      ).paginating();
-      const posts = await features.query
-        .sort("-createdAt")
-        .populate("user likes", "avatar username fullname followers")
-        .populate({
-          path: "comments",
-          populate: {
-            path: "user likes",
-            select: "-password",
-          },
+      const {limit, skip} = Pagination(req);
+      try {
+        const posts = await Post.find({
+          user: [...req.user.following, req.id],
+        })
+          .limit(limit)
+          .skip(skip)
+          .sort("-createdAt")
+          .populate("user", "-password")
+          .populate({
+            path: "comments",
+            populate: {
+              path: "user likes",
+              select: "-password",
+            },
+          });
+        const totalPosts = await Post.find({
+          user: [...req.user.following, req.id],
         });
-      return res.json({
-        message: "Success!",
-        result: posts.length,
-        posts,
-      });
+        const count = totalPosts.length;
+        let total = 0;
+        if (count % limit === 0) {
+          total = count / limit;
+        } else {
+          total = Math.floor(count / limit) + 1;
+        }
+        return res.json({posts, total});
+      } catch (error) {
+        return res.status(500).json({message: error.message});
+      }
     } catch (error) {
       return res.status(500).json({message: error.message});
     }
@@ -69,29 +73,23 @@ const postCtrl = {
           content,
           images,
         }
-      )
-        .populate("user likes", "avatar username fullname")
-        .populate({
-          path: "comments",
-          populate: {
-            path: "user likes",
-            select: "-password",
-          },
-        });
-      return res.json({message: "Updated post!"});
+      );
+      return res.json({
+        message: "Updated post!",
+      });
     } catch (error) {
       return res.status(500).json({message: error.message});
     }
   },
   likePost: async (req, res) => {
     try {
-      const post = await Post.find({_id: req.params.id, likes: req.user._id});
+      const post = await Post.find({_id: req.params.id, likes: req.id});
       if (post.length > 0)
         return res.status(400).json({message: "You liked this post."});
       const like = await Post.findOneAndUpdate(
         {_id: req.params.id},
         {
-          $push: {likes: req.user._id},
+          $push: {likes: req.id},
         },
         {new: true}
       );
@@ -107,7 +105,7 @@ const postCtrl = {
       const like = await Post.findOneAndUpdate(
         {_id: req.params.id},
         {
-          $pull: {likes: req.user._id},
+          $pull: {likes: req.id},
         },
         {new: true}
       );
@@ -120,14 +118,13 @@ const postCtrl = {
   },
   getUserPosts: async (req, res) => {
     try {
-      const features = new APIfeatures(
-        Post.find({user: req.params.id}),
-        req.query
-      ).paginating();
-      const posts = await features.query.sort("-createdAt");
+      const totalPost = await Post.find({user: req.params.id});
+      const posts = await Post.find({user: req.params.id})
+        .sort("-createdAt")
+        .limit(req.query.limit);
       return res.json({
         posts,
-        result: posts.length,
+        next: totalPost.length > posts.length,
       });
     } catch (error) {
       return res.status(500).json({message: error.message});
@@ -136,7 +133,7 @@ const postCtrl = {
   getPost: async (req, res) => {
     try {
       const post = await Post.findById(req.params.id)
-        .populate("user likes", "avatar username fullname followers")
+        .populate("user", "-password")
         .populate({
           path: "comments",
           populate: {
@@ -151,18 +148,38 @@ const postCtrl = {
       return res.status(500).json({message: error.message});
     }
   },
-  getPostsDicover: async (req, res) => {
+  getPostsDiscover: async (req, res) => {
+    const {limit, skip} = Pagination(req);
     try {
-      const newArr = [...req.user.following, req.user._id];
-      const num = req.query.num || 9;
-      const posts = await Post.aggregate([
-        {$match: {user: {$nin: newArr}}},
-        {$sample: {size: Number(num)}},
-      ]);
-      return res.json({
-        result: posts.length,
-        posts,
+      const newArr = [
+        ...req.user.following.map((item) => String(item)),
+        req.id,
+      ];
+      const posts = await Post.find({
+        user: {$nin: newArr},
+      })
+        .limit(limit)
+        .skip(skip)
+        .sort("-createdAt")
+        .populate("user", "-password")
+        .populate({
+          path: "comments",
+          populate: {
+            path: "user likes",
+            select: "-password",
+          },
+        });
+      const totalPosts = await Post.find({
+        user: {$nin: newArr},
       });
+      const count = totalPosts.length;
+      let total = 0;
+      if (count % limit === 0) {
+        total = count / limit;
+      } else {
+        total = Math.floor(count / limit) + 1;
+      }
+      return res.json({posts, total});
     } catch (error) {
       return res.status(500).json({message: error.message});
     }
@@ -171,21 +188,23 @@ const postCtrl = {
     try {
       const post = await Post.findOneAndDelete({
         _id: req.params.id,
-        user: req.user._id,
+        user: req.id,
       });
       await Comment.deleteMany({_id: {$in: post.comments}});
-      return res.json({message: "Deleted post!"});
+      return res.json({
+        message: "Deleted post!",
+      });
     } catch (error) {
       return res.status(500).json({message: error.message});
     }
   },
   savePost: async (req, res) => {
     try {
-      const user = await User.find({_id: req.user._id, saved: req.params.id});
+      const user = await User.find({_id: req.id, saved: req.params.id});
       if (user.length > 0)
         return res.status(400).json({message: "You saved this post."});
       const save = await User.findOneAndUpdate(
-        {_id: req.user._id},
+        {_id: req.id},
         {
           $push: {saved: req.params.id},
         },
@@ -201,7 +220,7 @@ const postCtrl = {
   unSavePost: async (req, res) => {
     try {
       const save = await User.findOneAndUpdate(
-        {_id: req.user._id},
+        {_id: req.id},
         {
           $pull: {saved: req.params.id},
         },
@@ -216,16 +235,13 @@ const postCtrl = {
   },
   getSavePosts: async (req, res) => {
     try {
-      const features = new APIfeatures(
-        Post.find({
-          _id: {$in: req.user.saved},
-        }),
-        req.query
-      ).paginating();
-      const savePosts = await features.query.sort("-createdAt");
+      const totalPost = await Post.find({_id: {$in: req.user.saved}});
+      const posts = await Post.find({_id: {$in: req.user.saved}})
+        .sort("-createdAt")
+        .limit(req.query.limit);
       return res.json({
-        savePosts,
-        result: savePosts.length,
+        posts,
+        next: totalPost.length > posts.length,
       });
     } catch (error) {
       return res.status(500).json({message: error.message});

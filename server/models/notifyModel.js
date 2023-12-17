@@ -22,6 +22,6 @@ const notifySchema = new mongoose.Schema(
   }
 );
 
-const Notify = mongoose.model("Notify", notifySchema);
+const Notify = mongoose.model("notify", notifySchema);
 
 module.exports = Notify;

@@ -49,7 +49,6 @@ const userSchema = new mongoose.Schema(
     story: {
       type: String,
       default: "",
-      maxlength: 200,
     },
     website: {
       type: String,
@@ -70,15 +69,19 @@ const userSchema = new mongoose.Schema(
     saved: [
       {
         type: mongoose.Types.ObjectId,
-        ref: "user",
+        ref: "post",
       },
     ],
+    status: {
+      type: String,
+      default: "inactive",
+    },
   },
   {
     timestamps: true,
   }
 );
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model("user", userSchema);
 
 module.exports = User;

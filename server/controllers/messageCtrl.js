@@ -53,7 +53,7 @@ const messageCtrl = {
     try {
       const features = new APIfeatures(
         Conversation.find({
-          recipients: req.user._id,
+          recipients: req.id,
         }),
         req.query
       ).paginating();
@@ -73,8 +73,8 @@ const messageCtrl = {
       const features = new APIfeatures(
         Message.find({
           $or: [
-            {sender: req.user._id, recipient: req.params.id},
-            {sender: req.params.id, recipient: req.user._id},
+            {sender: req.id, recipient: req.params.id},
+            {sender: req.params.id, recipient: req.id},
           ],
         }),
         req.query
@@ -92,7 +92,7 @@ const messageCtrl = {
     try {
       await Message.findOneAndDelete({
         _id: req.params.id,
-        sender: req.user._id,
+        sender: req.id,
       });
       return res.json({message: "Message deleted!"});
     } catch (error) {
@@ -103,8 +103,8 @@ const messageCtrl = {
     try {
       const newConver = await Conversation.findOneAndDelete({
         $or: [
-          {recipients: [req.user._id, req.params.id]},
-          {recipients: [req.params.id, req.user._id]},
+          {recipients: [req.id, req.params.id]},
+          {recipients: [req.params.id, req.id]},
         ],
       });
       await Message.deleteMany({conversation: newConver._id});
