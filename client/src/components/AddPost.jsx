@@ -4,7 +4,6 @@ import {toast} from "react-toastify";
 
 import {createPost, reset} from "../features/post/postSlice";
 import {convertToBase64} from "../lib";
-import Loading from "./alert/Loading";
 
 const AddPost = () => {
   const [content, setContent] = useState("");
@@ -51,25 +50,26 @@ const AddPost = () => {
     dispatch(createPost({content, images}));
   };
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   return (
-    <div className="w-full max-w-[80%] overflow-hidden rounded-md bg-white px-10 py-10 shadow-md sm:rounded-lg">
+    <div className="w-full overflow-hidden rounded-md px-10 py-10 shadow-md">
       <h2 className="mb-6 text-center text-3xl font-bold">Create Post</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          {images.length > 0 &&
-            images.map((image, i) => (
-              <img
-                src={
-                  typeof image === "string" ? image : URL.createObjectURL(image)
-                }
-                alt="post image"
-                key={`post-${i}`}
-              />
-            ))}
+          <div className="flex items-center gap-3 mb-4">
+            {images.length > 0 &&
+              images.map((image, i) => (
+                <img
+                  src={
+                    typeof image === "string"
+                      ? image
+                      : URL.createObjectURL(image)
+                  }
+                  alt="post image"
+                  key={`post-${i}`}
+                  className="h-24 w-24 rounded"
+                />
+              ))}
+          </div>
           <input
             type="file"
             name="file"
@@ -100,9 +100,10 @@ const AddPost = () => {
         <div>
           <button
             type="submit"
-            className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600 focus:outline-none"
+            className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600 focus:outline-none disabled:bg-blue-200"
+            disabled={isLoading}
           >
-            Post
+            {isLoading ? "Processing..." : "Post"}
           </button>
         </div>
       </form>

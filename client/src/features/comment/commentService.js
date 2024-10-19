@@ -12,39 +12,6 @@ const createComment = async (data, token) => {
   return response.data;
 };
 
-const updateComment = async (id, data, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  const response = await axios.patch(`${BASE_URL}/comment/${id}`, data, config);
-  return response.data;
-};
-
-const likeComment = async (id, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  const response = await axios.patch(`${BASE_URL}/comment/${id}/like`, config);
-  return response.data;
-};
-
-const unLikeComment = async (id, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  const response = await axios.patch(
-    `${BASE_URL}/comment/${id}/unlike`,
-    config
-  );
-  return response.data;
-};
-
 const deleteComment = async (id, token) => {
   const config = {
     headers: {
@@ -57,9 +24,6 @@ const deleteComment = async (id, token) => {
 
 const commentService = {
   createComment,
-  updateComment,
-  likeComment,
-  unLikeComment,
   deleteComment,
 };
 

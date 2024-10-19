@@ -2,10 +2,8 @@ import {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
-import propTypes from "prop-types";
 
 import {getUser, reset} from "../features/user/userSlice";
-import {Loading} from "./";
 
 const AvatarDropdown = ({id}) => {
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
@@ -46,15 +44,12 @@ const AvatarDropdown = ({id}) => {
     navigate(`/profile/${id}`);
   };
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   return (
     <div className="relative">
       <button
         onClick={handleToggleAvatar}
         className="flex items-center focus:outline-none"
+        disabled={isLoading}
       >
         <img
           className="w-8 h-8 rounded-full"
@@ -83,10 +78,6 @@ const AvatarDropdown = ({id}) => {
       )}
     </div>
   );
-};
-
-AvatarDropdown.propTypes = {
-  id: propTypes.string,
 };
 
 export default AvatarDropdown;

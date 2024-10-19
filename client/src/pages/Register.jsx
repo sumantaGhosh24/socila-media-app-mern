@@ -1,12 +1,11 @@
 import {useState, useEffect} from "react";
 import {useDispatch} from "react-redux";
 import {useNavigate, Link} from "react-router-dom";
-import {toast} from "react-toastify";
 import {FaEye, FaEyeSlash} from "react-icons/fa";
+import {toast} from "react-toastify";
 
 import {useAuth, useTitle} from "../hooks";
 import {reset, register} from "../features/auth/authSlice";
-import {Loading} from "../components";
 
 const Register = () => {
   useTitle("Register User");
@@ -61,10 +60,6 @@ const Register = () => {
     e.preventDefault();
     dispatch(register(userData));
   };
-
-  if (isLoading) {
-    return <Loading />;
-  }
 
   return (
     <>
@@ -233,9 +228,10 @@ const Register = () => {
             <div className="flex items-center justify-between">
               <button
                 type="submit"
-                className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600 focus:outline-none"
+                className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600 disabled:bg-blue-200 focus:outline-none"
+                disabled={isLoading}
               >
-                Register
+                {isLoading ? "Processing..." : "Register"}
               </button>
               <p className="font-bold">
                 Already have an account?{" "}

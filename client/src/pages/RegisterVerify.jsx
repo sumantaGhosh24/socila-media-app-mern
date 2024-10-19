@@ -3,7 +3,6 @@ import {useDispatch} from "react-redux";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {toast} from "react-toastify";
 
-import {Loading} from "../components";
 import {reset, registerVerify} from "../features/auth/authSlice";
 import {useAuth, useTitle} from "../hooks";
 
@@ -38,10 +37,6 @@ const RegisterVerify = () => {
     dispatch(registerVerify(token));
   };
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   return (
     <>
       {token ? (
@@ -51,10 +46,11 @@ const RegisterVerify = () => {
               Click the below link to activate you account
             </h1>
             <button
-              className="mb-6 rounded-full bg-blue-500 px-8 py-4 font-bold text-white hover:bg-blue-700 text-xl"
+              className="mb-6 rounded-full bg-blue-500 px-8 py-4 font-bold text-white hover:bg-blue-700 disabled:bg-blue-200 text-xl"
               onClick={handleVerify}
+              disabled={isLoading}
             >
-              Click Me
+              {isLoading ? "Processing..." : "Click Me"}
             </button>
             <div className="text-2xl">
               <p>

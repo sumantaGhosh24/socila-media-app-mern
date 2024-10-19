@@ -1,26 +1,19 @@
 import {BsHeart, BsHeartFill} from "react-icons/bs";
-import propTypes from "prop-types";
 
 const LikeButton = ({isLike, handleLike, handleUnLike}) => {
   return (
     <>
       {isLike ? (
         <i onClick={handleUnLike}>
-          <BsHeartFill />
+          <BsHeartFill size={24} color="red" className="cursor-pointer" />
         </i>
       ) : (
         <i onClick={handleLike}>
-          <BsHeart />
+          <BsHeart size={24} className="cursor-pointer" />
         </i>
       )}
     </>
   );
-};
-
-LikeButton.propTypes = {
-  isLike: propTypes.any,
-  handleLike: propTypes.any,
-  handleUnLike: propTypes.any,
 };
 
 export default LikeButton;

@@ -1,9 +1,9 @@
 import {useEffect} from "react";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
 import {toast} from "react-toastify";
 
-import {Loading, PostCard} from "../components";
+import {PostCard} from "../components";
 import {useTitle} from "../hooks";
 import {getPost, reset} from "../features/post/postSlice";
 
@@ -13,6 +13,7 @@ const Post = () => {
   const {id} = useParams();
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {post, isLoading, isSuccess, isError, message} = useSelector(
     (state) => state.post
@@ -21,7 +22,7 @@ const Post = () => {
   useEffect(() => {
     if (!id) return;
     dispatch(getPost(id));
-  }, [dispatch, id]);
+  }, [dispatch, id, navigate]);
 
   useEffect(() => {
     if (isError) {
@@ -41,9 +42,9 @@ const Post = () => {
     dispatch(reset());
   }, [isError, isSuccess, message, dispatch]);
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  if (isLoading) return null;
+
+  if (!post) return null;
 
   return (
     <div className="container mx-auto">

@@ -42,7 +42,7 @@ const postCtrl = {
           .populate({
             path: "comments",
             populate: {
-              path: "user likes",
+              path: "user",
               select: "-password",
             },
           });
@@ -60,23 +60,6 @@ const postCtrl = {
       } catch (error) {
         return res.status(500).json({message: error.message});
       }
-    } catch (error) {
-      return res.status(500).json({message: error.message});
-    }
-  },
-  updatePost: async (req, res) => {
-    try {
-      const {content, images} = req.body;
-      const post = await Post.findOneAndUpdate(
-        {_id: req.params.id},
-        {
-          content,
-          images,
-        }
-      );
-      return res.json({
-        message: "Updated post!",
-      });
     } catch (error) {
       return res.status(500).json({message: error.message});
     }
@@ -137,7 +120,7 @@ const postCtrl = {
         .populate({
           path: "comments",
           populate: {
-            path: "user likes",
+            path: "user",
             select: "-password",
           },
         });
@@ -165,7 +148,7 @@ const postCtrl = {
         .populate({
           path: "comments",
           populate: {
-            path: "user likes",
+            path: "user",
             select: "-password",
           },
         });

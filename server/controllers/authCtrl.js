@@ -126,7 +126,7 @@ const authCtrl = {
         await User.findByIdAndUpdate(us._id, {status: "active"});
         const accessToken = jwt.sign(
           {
-            UserInfo: {email: us.email, role: us.role, id: us._id},
+            UserInfo: {email: us.email, id: us._id},
           },
           process.env.ACCESS_TOKEN_SECRET,
           {expiresIn: "15m"}
@@ -256,7 +256,7 @@ const authCtrl = {
           res.clearCookie("check");
           const accessToken = jwt.sign(
             {
-              UserInfo: {email: us.email, role: us.role, id: us._id},
+              UserInfo: {email: us.email, id: us._id},
             },
             process.env.ACCESS_TOKEN_SECRET,
             {expiresIn: "15m"}
@@ -300,7 +300,7 @@ const authCtrl = {
           if (!user) return res.status(401).json({message: "Unauthorized"});
           const accessToken = jwt.sign(
             {
-              UserInfo: {email: user.email, role: user.role, id: user._id},
+              UserInfo: {email: user.email, id: user._id},
             },
             process.env.ACCESS_TOKEN_SECRET,
             {expiresIn: "15m"}

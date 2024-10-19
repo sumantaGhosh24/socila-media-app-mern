@@ -12,11 +12,10 @@ import {
   RedditShareButton,
   RedditIcon,
 } from "react-share";
-import propTypes from "prop-types";
 
 const ShareModal = ({url}) => {
   return (
-    <div className="flex">
+    <div className="flex justify-center gap-3 my-2.5">
       <FacebookShareButton url={url}>
         <FacebookIcon round={true} size={32} />
       </FacebookShareButton>
@@ -37,10 +36,6 @@ const ShareModal = ({url}) => {
       </WhatsappShareButton>
     </div>
   );
-};
-
-ShareModal.propTypes = {
-  url: propTypes.any,
 };
 
 export default ShareModal;

@@ -3,7 +3,6 @@ import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 
-import {Loading} from "../components";
 import {loginVerify, reset} from "../features/auth/authSlice";
 import {useAuth, useTitle} from "../hooks";
 
@@ -37,10 +36,6 @@ const LoginVerify = () => {
     dispatch(loginVerify({otp}));
   };
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   return (
     <>
       <div className="flex h-screen items-center justify-center bg-gray-200">
@@ -67,9 +62,10 @@ const LoginVerify = () => {
             <div className="flex items-center">
               <button
                 type="submit"
-                className="focus:shadow-outline founded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600 focus:outline-none"
+                className="focus:shadow-outline founded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600 disabled:bg-blue-200 focus:outline-none"
+                disabled={isLoading}
               >
-                Verify Login
+                {isLoading ? "Processing..." : "Verify Login"}
               </button>
             </div>
           </form>

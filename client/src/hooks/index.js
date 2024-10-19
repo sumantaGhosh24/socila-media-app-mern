@@ -1,2 +1,4 @@
-export {default as useTitle} from "./useTitle";
-export {default as useAuth} from "./useAuth";
+import useTitle from "./useTitle";
+import useAuth from "./useAuth";
+
+export {useTitle, useAuth};

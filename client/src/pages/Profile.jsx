@@ -3,7 +3,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
 import {toast} from "react-toastify";
 
-import {Info, Loading, ProfilePosts, Saved, ResetPassword} from "../components";
+import {Info, ProfilePosts, Saved, ResetPassword} from "../components";
 import {getUser, reset} from "../features/user/userSlice";
 import {reset as postReset} from "../features/post/postSlice";
 import {useAuth} from "../hooks";
@@ -41,42 +41,40 @@ const Profile = () => {
     dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  if (isLoading) return null;
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto space-y-5">
       <Info auth={userId} profile={user} />
       {userId === id && (
-        <div>
+        <div className="flex items-center gap-3">
           <button
-            className={saveTab ? "" : "active"}
             onClick={() => {
               setPostTab(true);
               setSaveTab(false);
               setResetPassword(false);
             }}
+            className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600 focus:outline-none"
           >
             Posts
           </button>
           <button
-            className={saveTab ? "active" : ""}
             onClick={() => {
               setPostTab(false);
               setSaveTab(true);
               setResetPassword(false);
             }}
+            className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600 focus:outline-none"
           >
             Saved
           </button>
           <button
-            className={saveTab ? "active" : ""}
             onClick={() => {
               setPostTab(false);
               setSaveTab(false);
               setResetPassword(true);
             }}
+            className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600 focus:outline-none"
           >
             Reset Password
           </button>

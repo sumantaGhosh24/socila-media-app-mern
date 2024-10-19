@@ -1,12 +1,11 @@
 import {useState, useEffect} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {toast} from "react-toastify";
 import {FaEye, FaEyeSlash} from "react-icons/fa";
+import {toast} from "react-toastify";
 
 import {useAuth, useTitle} from "../hooks";
 import {login, reset} from "../features/auth/authSlice";
-import {Loading} from "../components";
 
 const Login = () => {
   useTitle("Login User");
@@ -52,10 +51,6 @@ const Login = () => {
     e.preventDefault();
     dispatch(login(userData));
   };
-
-  if (isLoading) {
-    return <Loading />;
-  }
 
   return (
     <>
@@ -116,9 +111,10 @@ const Login = () => {
             <div className="flex items-center justify-between">
               <button
                 type="submit"
-                className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600 focus:outline-none"
+                className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600 disabled:bg-blue-200 focus:outline-none"
+                disabled={isLoading}
               >
-                Login
+                {isLoading ? "Processing..." : "Login"}
               </button>
               <p className="font-bold">
                 Don&apos;t have an account?{" "}

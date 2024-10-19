@@ -1,42 +1,67 @@
-export {default as GuestAuth} from "./auth/GuestAuth";
-export {default as UserAuth} from "./auth/UserAuth";
-export {default as Loading} from "./alert/Loading";
-export {default as Header} from "./header/Header";
-export {default as Search} from "./header/Search";
-export {default as Status} from "./home/Status";
-export {default as RightSideBar} from "./home/RightSideBar";
-export {default as InputComment} from "./home/InputComment";
-export {default as Comments} from "./home/Comments";
-export {default as CommentDisplay} from "./home/comments/CommentDisplay";
-export {default as CommentCard} from "./home/comments/CommentCard";
-export {default as CommentMenu} from "./home/comments/CommentMenu";
-export {default as CardFooter} from "./home/post_card/CardFooter";
-export {default as CardBody} from "./home/post_card/CardBody";
-export {default as CardHeader} from "./home/post_card/CardHeader";
-export {default as Info} from "./profile/Info";
-export {default as EditProfile} from "./profile/EditProfile";
-export {default as Followers} from "./profile/Followers";
-export {default as Following} from "./profile/Following";
-export {default as ProfilePosts} from "./profile/Posts";
-export {default as Saved} from "./profile/Saved";
-export {default as AvatarDropdown} from "./AvatarDropdown";
-export {default as NotifyModal} from "./NotifyModal";
-export {default as Avatar} from "./Avatar";
-export {default as UserCard} from "./UserCard";
-export {default as FollowBtn} from "./FollowBtn";
-export {default as Pagination} from "./Pagination";
-export {default as PostCard} from "./PostCard";
-export {default as Icons} from "./Icons";
-export {default as LikeButton} from "./LikeButton";
-export {default as ShareModal} from "./ShareModal";
-export {default as Carousel} from "./Carousel";
-export {default as PostThumb} from "./PostThumb";
-export {default as LoadMoreBtn} from "./LoadMoreBtn";
-export {default as AddPost} from "./AddPost";
-export {default as EditPost} from "./EditPost";
-export {default as Posts} from "./home/Posts";
-export {default as ResetPassword} from "./ResetPassword";
-export {default as LeftSide} from "./message/LeftSide";
-export {default as RightSide} from "./message/RightSide";
-export {default as MsgDisplay} from "./message/MsgDisplay";
-export {default as Times} from "./message/Times";
+import Header from "./Header";
+import Search from "./Search";
+import AvatarDropdown from "./AvatarDropdown";
+import UserCard from "./UserCard";
+import Avatar from "./Avatar";
+import UserAuth from "./UserAuth";
+import GuestAuth from "./GuestAuth";
+import Status from "./Status";
+import AddPost from "./AddPost";
+import Posts from "./Posts";
+import Pagination from "./Pagination";
+import PostCard from "./PostCard";
+import CardHeader from "./CardHeader";
+import CardBody from "./CardBody";
+import Carousel from "./Carousel";
+import CardFooter from "./CardFooter";
+import ShareModal from "./ShareModal";
+import Comments from "./Comments";
+import CommentCard from "./CommentCard";
+import LikeButton from "./LikeButton";
+import InputComment from "./InputComment";
+import RightSideBar from "./RightSideBar";
+import FollowBtn from "./FollowBtn";
+import Info from "./Info";
+import EditProfile from "./EditProfile";
+import Following from "./Following";
+import ProfilePosts from "./ProfilePosts";
+import Saved from "./Saved";
+import PostThumb from "./PostThumb";
+import LoadMoreBtn from "./LoadMoreBtn";
+import ResetPassword from "./ResetPassword";
+import Followers from "./Followers";
+
+export {
+  Header,
+  Search,
+  AvatarDropdown,
+  UserCard,
+  Avatar,
+  UserAuth,
+  GuestAuth,
+  Status,
+  AddPost,
+  Posts,
+  Pagination,
+  PostCard,
+  CardHeader,
+  CardBody,
+  Carousel,
+  CardFooter,
+  ShareModal,
+  Comments,
+  CommentCard,
+  LikeButton,
+  InputComment,
+  RightSideBar,
+  FollowBtn,
+  Info,
+  EditProfile,
+  Following,
+  ProfilePosts,
+  Saved,
+  PostThumb,
+  LoadMoreBtn,
+  ResetPassword,
+  Followers,
+};

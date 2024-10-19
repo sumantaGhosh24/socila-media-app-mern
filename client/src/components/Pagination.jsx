@@ -1,6 +1,5 @@
 import {useState, useEffect} from "react";
 import {useSearchParams} from "react-router-dom";
-import propTypes from "prop-types";
 
 const Pagination = ({total, callback}) => {
   const [page, setPage] = useState(1);
@@ -27,10 +26,13 @@ const Pagination = ({total, callback}) => {
   }, [search]);
 
   return (
-    <div>
-      <ul className="flex">
+    <div className="mt-5">
+      <ul className="flex items-center justify-between">
         {page > 1 && (
-          <li onClick={() => handlePagination(page - 1)}>
+          <li
+            onClick={() => handlePagination(page - 1)}
+            className="bg-gray-400 text-white py-2 px-4 rounded cursor-pointer"
+          >
             <span aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
             </span>
@@ -39,7 +41,7 @@ const Pagination = ({total, callback}) => {
         {newArr.map((num) => (
           <li
             key={num}
-            className={`page-item ${
+            className={`page-item text-white py-2 px-4 rounded cursor-pointer ${
               isActive(num) === "active" ? "bg-blue-700" : "bg-gray-700"
             }`}
             onClick={() => handlePagination(num)}
@@ -48,7 +50,10 @@ const Pagination = ({total, callback}) => {
           </li>
         ))}
         {page < total && (
-          <li onClick={() => handlePagination(page + 1)}>
+          <li
+            onClick={() => handlePagination(page + 1)}
+            className="bg-gray-400 text-white py-2 px-4 rounded cursor-pointer"
+          >
             <span aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
             </span>
@@ -57,11 +62,6 @@ const Pagination = ({total, callback}) => {
       </ul>
     </div>
   );
-};
-
-Pagination.propTypes = {
-  total: propTypes.any,
-  callback: propTypes.any,
 };
 
 export default Pagination;

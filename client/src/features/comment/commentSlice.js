@@ -27,60 +27,6 @@ export const createComment = createAsyncThunk(
   }
 );
 
-export const updateComment = createAsyncThunk(
-  "comment/updateComment",
-  async (data, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user.accessToken;
-      return await commentService.updateComment(data.id, data, token);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
-export const likeComment = createAsyncThunk(
-  "comment/likeComment",
-  async (data, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user.accessToken;
-      return await commentService.likeComment(data, token);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
-export const unLikeComment = createAsyncThunk(
-  "comment/unLikeComment",
-  async (data, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user.accessToken;
-      return await commentService.unLikeComment(data, token);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
 export const deleteComment = createAsyncThunk(
   "comment/deleteComment",
   async (data, thunkAPI) => {
@@ -121,45 +67,6 @@ export const commentSlice = createSlice({
         state.message = action.payload;
       })
       .addCase(createComment.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      .addCase(updateComment.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(updateComment.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.message = action.payload;
-      })
-      .addCase(updateComment.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      .addCase(likeComment.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(likeComment.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.message = action.payload;
-      })
-      .addCase(likeComment.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      .addCase(unLikeComment.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(unLikeComment.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.message = action.payload;
-      })
-      .addCase(unLikeComment.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

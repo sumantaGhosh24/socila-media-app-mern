@@ -1,21 +1,24 @@
 import {useState} from "react";
-import propTypes from "prop-types";
 
 const Carousel = ({images}) => {
-  const [currentImage, setCurrentImage] = useState(null);
+  const [currentImage, setCurrentImage] = useState(images[0]);
 
   return (
     <div>
       {currentImage && (
-        <img src={currentImage} alt="current image" className="h-24 w-24" />
+        <img
+          src={currentImage}
+          alt="current image"
+          className="h-[300px] w-full rounded mb-4"
+        />
       )}
-      <div className="flex">
+      <div className="flex gap-3">
         {images.map((image, i) => (
           <img
             src={image}
             alt={`image-${i}`}
             key={i}
-            className={`h-10 w-10 ${
+            className={`h-10 w-10 rounded cursor-pointer ${
               currentImage === image && "border-2 border-blue-500"
             }`}
             onClick={() => setCurrentImage(image)}
@@ -24,10 +27,6 @@ const Carousel = ({images}) => {
       </div>
     </div>
   );
-};
-
-Carousel.propTypes = {
-  images: propTypes.array,
 };
 
 export default Carousel;

@@ -27,16 +27,6 @@ const getPosts = async (search, token) => {
   return response.data;
 };
 
-const updatePost = async (id, data, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  const response = await axios.patch(`${BASE_URL}/post/${id}`, data, config);
-  return response.data;
-};
-
 const getPost = async (id, token) => {
   const config = {
     headers: {
@@ -63,7 +53,7 @@ const likePost = async (id, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.patch(`${BASE_URL}/post/${id}/like`, config);
+  const response = await axios.patch(`${BASE_URL}/post/like/${id}`, {}, config);
   return response.data;
 };
 
@@ -73,7 +63,11 @@ const unLikePost = async (id, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.patch(`${BASE_URL}/post/${id}/unlike`, config);
+  const response = await axios.patch(
+    `${BASE_URL}/post/${id}/unlike`,
+    {},
+    config
+  );
   return response.data;
 };
 
@@ -112,7 +106,7 @@ const savePost = async (id, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.patch(`${BASE_URL}/savePost/${id}`, config);
+  const response = await axios.patch(`${BASE_URL}/savePost/${id}`, {}, config);
   return response.data;
 };
 
@@ -122,7 +116,11 @@ const unSavePost = async (id, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.patch(`${BASE_URL}/unSavePost/${id}`, config);
+  const response = await axios.patch(
+    `${BASE_URL}/unSavePost/${id}`,
+    {},
+    config
+  );
   return response.data;
 };
 
@@ -143,7 +141,6 @@ const getSavePosts = async (limit, token) => {
 const postService = {
   createPost,
   getPosts,
-  updatePost,
   getPost,
   deletePost,
   likePost,

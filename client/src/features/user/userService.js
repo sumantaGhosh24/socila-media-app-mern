@@ -41,7 +41,11 @@ const follow = async (id, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.patch(`${BASE_URL}/user/${id}/follow`, config);
+  const response = await axios.patch(
+    `${BASE_URL}/user/${id}/follow`,
+    {},
+    config
+  );
   return response.data;
 };
 
@@ -51,7 +55,11 @@ const unfollow = async (id, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.patch(`${BASE_URL}/user/${id}/unfollow`, config);
+  const response = await axios.patch(
+    `${BASE_URL}/user/${id}/unfollow`,
+    {},
+    config
+  );
   return response.data;
 };
 

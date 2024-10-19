@@ -50,24 +50,6 @@ export const getPosts = createAsyncThunk(
   }
 );
 
-export const updatePost = createAsyncThunk(
-  "post/updatePost",
-  async (data, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user.accessToken;
-      return await postService.updatePost(data.id, data, token);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
 export const getPost = createAsyncThunk(
   "post/getPost",
   async (data, thunkAPI) => {
@@ -109,7 +91,7 @@ export const likePost = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.accessToken;
-      return await postService.likePost(data, token);
+      return await postService.likePost(data.id, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -127,7 +109,7 @@ export const unLikePost = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.accessToken;
-      return await postService.unLikePost(data, token);
+      return await postService.unLikePost(data.id, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -267,19 +249,6 @@ export const postSlice = createSlice({
         state.posts = action.payload;
       })
       .addCase(getPosts.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      .addCase(updatePost.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(updatePost.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.message = action.payload;
-      })
-      .addCase(updatePost.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

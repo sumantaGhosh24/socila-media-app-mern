@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {Link, useNavigate, useSearchParams} from "react-router-dom";
-import {toast} from "react-toastify";
 import {FaEye, FaEyeSlash} from "react-icons/fa";
+import {toast} from "react-toastify";
 
 import {useAuth, useTitle} from "../hooks";
 import {
@@ -10,7 +10,6 @@ import {
   reset,
   validateConfirmForgotPassword,
 } from "../features/auth/authSlice";
-import {Loading} from "../components";
 
 const ConfirmForgotPassword = () => {
   useTitle("Confirm Forgot Password");
@@ -62,10 +61,6 @@ const ConfirmForgotPassword = () => {
     dispatch(confirmForgotPassword(data));
   };
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   return (
     <>
       {!cookieToken && !token && (
@@ -88,10 +83,11 @@ const ConfirmForgotPassword = () => {
               Click the below link to forgot your password
             </h1>
             <button
-              className="mb-6 rounded-full bg-blue-500 px-8 py-4 font-bold text-white hover:bg-blue-700 text-xl"
+              className="mb-6 rounded-full bg-blue-500 px-8 py-4 font-bold text-white hover:bg-blue-700 disabled:bg-blue-200 text-xl"
               onClick={handleForgotPassword}
+              disabled={isLoading}
             >
-              Click Me
+              {isLoading ? "Processing..." : "Click Me"}
             </button>
             <div className="text-2xl">
               <p>
@@ -173,9 +169,10 @@ const ConfirmForgotPassword = () => {
               </div>
               <button
                 type="submit"
-                className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600 focus:outline-none"
+                className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600 disabled:bg-blue-200 focus:outline-none"
+                disabled={isLoading}
               >
-                Change Password
+                {isLoading ? "Processing..." : "Change Password"}
               </button>
             </form>
             <div className="mt-6">

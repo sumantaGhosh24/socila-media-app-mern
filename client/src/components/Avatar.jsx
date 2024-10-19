@@ -1,5 +1,3 @@
-import propTypes from "prop-types";
-
 const Avatar = ({image, alt, size}) => {
   return (
     <img
@@ -10,12 +8,6 @@ const Avatar = ({image, alt, size}) => {
       alt={alt}
     />
   );
-};
-
-Avatar.propTypes = {
-  image: propTypes.string,
-  alt: propTypes.string,
-  size: propTypes.string,
 };
 
 export default Avatar;

@@ -2,9 +2,8 @@ import {useState, useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
-import propTypes from "prop-types";
+import {BsHeart, BsHeartFill} from "react-icons/bs";
 
-import Loading from "./alert/Loading";
 import {follow, reset, unfollow} from "../features/user/userSlice";
 
 const FollowBtn = ({user, currentUser}) => {
@@ -37,7 +36,7 @@ const FollowBtn = ({user, currentUser}) => {
   }, [isError, isSuccess, dispatch, navigate, message]);
 
   useEffect(() => {
-    if (user.following.find((item) => item._id === currentUser)) {
+    if (user.following.find((item) => item == currentUser)) {
       setFollowed(true);
     }
     return () => setFollowed(false);
@@ -57,24 +56,19 @@ const FollowBtn = ({user, currentUser}) => {
     dispatch(unfollow(user._id));
   };
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   return (
     <>
       {followed ? (
-        <button onClick={handleUnFollow}>UnFollow</button>
+        <button onClick={handleUnFollow} disabled={isLoading}>
+          <BsHeartFill color="red" />
+        </button>
       ) : (
-        <button onClick={handleFollow}>Follow</button>
+        <button onClick={handleFollow} disabled={isLoading}>
+          <BsHeart color="black" />
+        </button>
       )}
     </>
   );
-};
-
-FollowBtn.propTypes = {
-  user: propTypes.any,
-  currentUser: propTypes.any,
 };
 
 export default FollowBtn;

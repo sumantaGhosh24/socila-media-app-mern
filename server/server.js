@@ -6,7 +6,7 @@ const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const helmet = require("helmet");
 
-const connectDB = require("./lib/connectDb");
+const connectDB = require("./lib/connectDB");
 const corsOptions = require("./lib/corsOptions");
 
 const app = express();
@@ -27,8 +27,6 @@ app.use("/api", require("./routes/authRouter"));
 app.use("/api", require("./routes/userRouter"));
 app.use("/api", require("./routes/postRouter"));
 app.use("/api", require("./routes/commentRouter"));
-app.use("/api", require("./routes/notifyRouter"));
-app.use("/api", require("./routes/messageRouter"));
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

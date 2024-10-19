@@ -1,13 +1,27 @@
-export {default as Register} from "./Register";
-export {default as RegisterVerify} from "./RegisterVerify";
-export {default as Login} from "./Login";
-export {default as LoginVerify} from "./LoginVerify";
-export {default as Logout} from "./Logout";
-export {default as ForgotPassword} from "./ForgotPassword";
-export {default as ConfirmForgotPassword} from "./ConfirmForgotPassword";
-export {default as Home} from "./Home";
-export {default as Profile} from "./Profile";
-export {default as Discover} from "./Discover";
-export {default as Post} from "./Post";
-export {default as Message} from "./Message";
-export {default as NotFound} from "./NotFound";
+import Register from "./Register";
+import RegisterVerify from "./RegisterVerify";
+import Login from "./Login";
+import LoginVerify from "./LoginVerify";
+import ForgotPassword from "./ForgotPassword";
+import ConfirmForgotPassword from "./ConfirmForgotPassword";
+import Logout from "./Logout";
+import Home from "./Home";
+import Profile from "./Profile";
+import Discover from "./Discover";
+import Post from "./Post";
+import NotFound from "./NotFound";
+
+export {
+  Register,
+  RegisterVerify,
+  Login,
+  LoginVerify,
+  ForgotPassword,
+  ConfirmForgotPassword,
+  Logout,
+  Home,
+  Profile,
+  Discover,
+  Post,
+  NotFound,
+};

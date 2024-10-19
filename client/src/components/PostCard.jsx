@@ -1,32 +1,18 @@
-import {useState} from "react";
-import propTypes from "prop-types";
-
-import {
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Comments,
-  InputComment,
-  EditPost,
-} from "./";
+import {CardHeader, CardBody, CardFooter, Comments, InputComment} from "./";
 
 const PostCard = ({post}) => {
-  const [edit, setEdit] = useState(false);
-
   return (
-    <div className="test-1">
-      <CardHeader post={post} setEdit={setEdit} />
+    <div className="my-3 shadow-md rounded-md p-3">
+      <CardHeader post={post} />
+      <hr className="my-3" />
       <CardBody post={post} />
+      <hr className="my-3" />
       <CardFooter post={post} />
+      <hr className="my-3" />
       <Comments post={post} />
       <InputComment post={post} />
-      {edit && <EditPost setEdit={setEdit} post={post} />}
     </div>
   );
-};
-
-PostCard.propTypes = {
-  post: propTypes.any,
 };
 
 export default PostCard;

@@ -67,7 +67,6 @@ const userCtrl = {
         },
         {new: true}
       );
-      console.log(user1, user2);
       return res.json({message: "Now you follow this user!"});
     } catch (error) {
       return res.status(500).json({message: error.message});

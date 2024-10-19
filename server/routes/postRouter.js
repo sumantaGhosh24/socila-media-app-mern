@@ -10,11 +10,10 @@ router
 
 router
   .route("/post/:id")
-  .patch(auth, postCtrl.updatePost)
   .get(auth, postCtrl.getPost)
   .delete(auth, postCtrl.deletePost);
 
-router.patch("/post/:id/like", auth, postCtrl.likePost);
+router.patch("/post/like/:id", auth, postCtrl.likePost);
 
 router.patch("/post/:id/unlike", auth, postCtrl.unLikePost);
 

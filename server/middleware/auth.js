@@ -14,7 +14,6 @@ const auth = async (req, res, next) => {
       const user = await User.findOne({_id: decoded?.UserInfo?.id});
       req.user = user;
       req.email = decoded?.UserInfo?.email;
-      req.role = decoded?.UserInfo?.role;
       req.id = decoded?.UserInfo?.id;
       next();
     });

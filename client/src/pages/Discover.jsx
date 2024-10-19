@@ -2,7 +2,7 @@ import {useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {toast} from "react-toastify";
 
-import {Loading, PostCard, Pagination} from "../components/";
+import {PostCard, Pagination} from "../components";
 import {getPostsDiscover, reset} from "../features/post/postSlice";
 import {useTitle} from "../hooks";
 
@@ -44,9 +44,7 @@ const Discover = () => {
     dispatch(getPostsDiscover({search}));
   };
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  if (isLoading) return null;
 
   return (
     <div className="container mx-auto">
